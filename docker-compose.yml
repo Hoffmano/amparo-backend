@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+    node-js:
+        container_name: node-js
+        build: .
+        command: npm start
+        depends_on:
+            - mongo
+        networks:
+            - app-connect
+        ports:
+            - "3000:3000"
+        volumes:
+            - .:/usr/app
+
+    mongo:
+        container_name: mongo
+        image: "mongo"
+        restart: unless-stopped
+        volumes:
+            - mongo-data:/data
+        ports:
+            - "27017:27017"
+        networks:
+            - app-connect
+
+volumes:
+    mongo-data:
+
+networks:
+    app-connect:
+        driver: bridge
